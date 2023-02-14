@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:youtubetest/apiHelper.dart';
 import 'package:youtubetest/model.dart';
+import 'package:youtubetest/vedioplayer.dart';
 
 void main(){
   runApp(
     MaterialApp(
      debugShowCheckedModeBanner: false,
-     home: myApp(),
+      routes: {
+        '/' : (context) => myApp(),
+        'vedio' : (context) => vedioPlayer(),
+      },
     )
   );
 }
@@ -35,22 +39,63 @@ class _myAppState extends State<myApp> {
 
             return (data!=null) ? Container(
               alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Title : ${data.title}"),
-                  GestureDetector(
-                      child: Image.network("${data.Image}")),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     image:DecorationImage(
-                  //       image: NetworkImage("${data.Image}"),
-                  //     )
-                  //   ),
-                  // )
-                  // Text("kind : ${data.kind}"),
-
-                ],
+              child: Container(
+                child: GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushNamed('vedio');
+                      // Global.link = e['vedio'];
+                    },
+                    child: Card(
+                      elevation: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        height: 300,
+                        width: double.infinity,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    //color: Colors.deepOrange,
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                        image: NetworkImage("${data.Image}"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "${data.title}",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.redAccent),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    // Text(
+                                    //   "${e['subtitle']}",
+                                    //   style: TextStyle(
+                                    //     fontSize: 22, color: Colors.black,fontWeight: FontWeight.bold,),
+                                    // ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
               ),
             ) : Text("No Data founds........");
           }
